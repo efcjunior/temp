@@ -1,0 +1,18 @@
+{
+  "name": "portifolio-continuity-extract",
+  "version": "1.0.0",
+  "description": "extract a range from values stored in the database",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "efcjunior",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "sha256": "^0.2.0"
+  }
+}

@@ -1,0 +1,50 @@
+<%- include('../partials/header.ejs')%>
+<ol class="breadcrumb">
+    <li><a href="./consulta">Continuidade</a></li>
+    <li class="active">Consulta</li>
+  </ol>
+<div class="row">
+    <div class="row col-sm-6">    
+        <div class="row col-sm-12">
+        <form method="POST">
+            <div class="form-group">
+            <label for="tipo">Tipo</label>
+            <select class="form-control" id="tipo" name="tipo">
+                <option>8</option>
+                <option selected>13</option>
+                <option>21</option>
+            </select>
+            </div>
+            <div class="form-group">
+            <label for="valor">Valor</label>
+            <textarea id="valor" name="valor" class="form-control" rows="21"></textarea>
+            </div>
+            <button type="submit" class="btn btn-default">Buscar</button>
+        </form>  
+    </div> 
+    </div>
+    <% if (typeof continuidade != 'undefined') {%>
+    <div class="row col-sm-6"> 
+        <div class="row col-sm-12">
+        <div class="form-group">
+            <table class="table">
+                <tr>
+                    <th>DH</th>
+                    <th>Min</th>
+                    <th>Max</th>
+                </tr>
+                <% continuidade.forEach(e => { %>
+                <tr>
+                    <td><%- e.dh%></td>
+                    <td><%- e.min%></td>
+                    <td><%- e.max%></td>
+                </tr>
+                <% }) %>
+            </table>           
+        </div>
+    </div>
+    </div>
+    </div>
+    <% } %>
+<%- include('../partials/footer.ejs')%>
+
