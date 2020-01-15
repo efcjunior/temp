@@ -13,7 +13,7 @@ const consulta = (req, res) => {
         return row.split('\t')
     })
     
-    let resposta = continuidade.consulta(dataSearch)
+    let resposta = continuidade.consulta(dataSearch) 
     res.render('continuidade/index', {continuidade: resposta.continuidade})
 }
 

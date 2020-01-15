@@ -94,9 +94,8 @@ const processaConsulta = (dataSearch) => {
                 let result =
                 dataStored.slice(rangeFirstIndex,rangeEndIndex)
                 .reverse().map(r => {
-                    return `{"dh": "${r.dh}", "min": "${r.left}", "max": "${r.right}"}`
+                    return `{"dh": "${r.dh}", "min": "${r.left}", "max": "${r.right}"}`.replace(new RegExp('\\.', 'g'),',')
                 })
-
                 return JSON.parse(`{ "continuidade" : [${result}]  }`)
                 break;
             }
