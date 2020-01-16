@@ -85,6 +85,7 @@ const processaConsulta = (dataSearch) => {
 
         if(arrayStored.length < 1){
             console.log('all stored avalues were iterated')
+            return JSON.parse(`{ "continuidade" : [Nenhum registro encontrado]  }`)
             break
         }else if(getMatchesTotalFromSearch(arrayStored,arraySearch) >= config.matchesRequired){
             
