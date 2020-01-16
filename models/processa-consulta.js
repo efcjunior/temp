@@ -60,7 +60,7 @@ const getMatchesTotalFromSearch = function(arrayStored, arraySearch){
             }    
         }
     }   
-    //console.log('Match total: ' + matchesCount)
+    console.log('Match total: ' + matchesCount)
     return matchesCount
 }
 
@@ -68,21 +68,21 @@ const processaConsulta = (dataSearch) => {
     let config
     switch(13){
         case 13:
-            config = new Config(13,8,3)
+            config = new Config(13,8,10)
             break;
     }    
     let arraySearch = dataSearch
     let searchSize = config.searchSize
     let dataStored = createValuePairFromFile()           
-    let rangeFirstIndex = 8
+    let rangeFirstIndex = 14
     let rangeEndIndex = rangeFirstIndex + searchSize 
 
-    if(typeof arraySearch == 'undefined'){
-        arraySearch = []
-    }
-
-    while(true){       
+    while(true){      
+        console.log('Index: ' + rangeFirstIndex + ' - ' + rangeEndIndex) 
         arrayStored = dataStored.slice(rangeFirstIndex,rangeEndIndex)
+        arrayStored.forEach(e=> console.log(e.dh + ' ' + e.left + ' ' + e.right))
+
+
         if(arrayStored.length < 1){
             console.log('all stored avalues were iterated')
             break
