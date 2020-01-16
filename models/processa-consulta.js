@@ -3,10 +3,11 @@ const fs = require('fs')
 const path = require('path')
 
 class Config {
-    constructor(searchSize, continuitySize, matchesRequired){
+    constructor(searchSize, continuitySize, matchesRequiredMinimum, matchesRequiredMaximum){
         this.searchSize = searchSize
         this.continuitySize = continuitySize
-        this.matchesRequired = matchesRequired
+        this.matchesRequiredMinimum = matchesRequiredMinimum
+        this.matchesRequiredMaximum = matchesRequiredMaximum
     }
 }
 
@@ -59,8 +60,7 @@ const getMatchesTotalFromSearch = function(arrayStored, arraySearch){
                 matchesCount++
             }    
         }
-    }   
-    console.log('Match total: ' + matchesCount)
+    }
     return matchesCount
 }
 
@@ -68,46 +68,45 @@ const processaConsulta = (dataSearch) => {
     let config
     switch(13){
         case 13:
-            config = new Config(13,8,10)
+            config = new Config(13,8,10,13)
             break;
     }    
     let arraySearch = dataSearch
     let searchSize = config.searchSize
-    let dataStored = createValuePairFromFile()           
-    let rangeFirstIndex = 14
-    let rangeEndIndex = rangeFirstIndex + searchSize 
-
-    while(true){      
-        console.log('Index: ' + rangeFirstIndex + ' - ' + rangeEndIndex) 
-        arrayStored = dataStored.slice(rangeFirstIndex,rangeEndIndex)
-        arrayStored.forEach(e=> console.log(e.dh + ' ' + e.left + ' ' + e.right))
-
-
-        if(arrayStored.length < 1){
-            console.log('all stored avalues were iterated')
-            return JSON.parse(`{ "continuidade" : [Nenhum registro encontrado]  }`)
-            break
-        }else if(getMatchesTotalFromSearch(arrayStored,arraySearch) >= config.matchesRequired){
-            
-            if(rangeFirstIndex >= config.continuitySize){
-                rangeEndIndex = rangeFirstIndex
-                rangeFirstIndex = rangeFirstIndex - config.continuitySize
-                let result =
-                dataStored.slice(rangeFirstIndex,rangeEndIndex)
-                .reverse().map(r => {
-                    return `{"dh": "${r.dh}", "min": "${r.left}", "max": "${r.right}"}`.replace(new RegExp('\\.', 'g'),',')
-                })
-                return JSON.parse(`{ "continuidade" : [${result}]  }`)
-                break;
+    let dataStored = createValuePairFromFile()               
+    let resposta = JSON.parse(`{ "continuidade" : ["Nenhuma continuidade foi encontrada para busca realizada"]  }`)
+    for(let mathchesCount = config.matchesRequiredMaximum; mathchesCount >= config.matchesRequiredMinimum; mathchesCount--){      
+        let rangeFirstIndex = 14
+        let rangeEndIndex = rangeFirstIndex + searchSize 
+        console.log('MatchCountRequired: ' + mathchesCount)
+        while(true){
+            console.log('Index: ' + rangeFirstIndex + ' - ' + rangeEndIndex) 
+            arrayStored = dataStored.slice(rangeFirstIndex,rangeEndIndex)
+            if(arrayStored.length < config.searchSize){
+                break
             }
-            
-            console.log('matches were found between: First Index ' + rangeFirstIndex + ' - End Index ' + rangeEndIndex + '. However, it does not have continuity.')
-            break
+            if(getMatchesTotalFromSearch(arrayStored,arraySearch) >= mathchesCount){      
+                console.log('Index: ' + rangeFirstIndex + ' - ' + rangeEndIndex) 
+                arrayStored.forEach(e=> console.log(e.dh + ' ' + e.left + ' ' + e.right))         
+                if(rangeFirstIndex >= config.continuitySize){
+                    rangeEndIndex = rangeFirstIndex
+                    rangeFirstIndex = rangeFirstIndex - config.continuitySize
+                    let result =
+                    dataStored.slice(rangeFirstIndex,rangeEndIndex)
+                    .reverse().map(r => {
+                        return `{"dh": "${r.dh}", "min": "${r.left}", "max": "${r.right}"}`.replace(new RegExp('\\.', 'g'),',')
+                    })
+                    resposta = JSON.parse(`{ "continuidade" : [${result}]  }`)
+                    return resposta
+                }                
+                console.log('matches were found between: First Index ' + rangeFirstIndex + ' - End Index ' + rangeEndIndex + '. However, it does not have continuity.')
+                break
+            }            
+            rangeFirstIndex++
+            rangeEndIndex++
         }
-        
-        rangeFirstIndex++
-        rangeEndIndex++
     }
+    return resposta
 }
 
 module.exports = {
