@@ -13,6 +13,8 @@ const consulta = (req, res) => {
         return row.split('\t')
     })
     
+    dataSearch.tipo = req.body.tipo
+
     let resposta = continuidade.consulta(dataSearch) 
     res.render('continuidade/index', {continuidade: resposta.continuidade})
 }

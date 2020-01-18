@@ -66,8 +66,11 @@ const getMatchesTotalFromSearch = function(arrayStored, arraySearch){
 
 const processaConsulta = (dataSearch) => {
     let config
-    switch(13){
-        case 13:
+    switch(dataSearch.tipo){
+        case '21':
+            config = new Config(21,13,16,21)
+            break;
+        case '13':
             config = new Config(13,8,10,13)
             break;
     }    
