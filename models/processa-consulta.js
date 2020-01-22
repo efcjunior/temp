@@ -61,6 +61,7 @@ const getMatchesTotalFromSearch = function(arrayStored, arraySearch){
             }    
         }
     }
+    console.log("Total matches found: " + matchesCount)
     return matchesCount
 }
 
@@ -79,17 +80,18 @@ const processaConsulta = (dataSearch) => {
     let dataStored = createValuePairFromFile()               
     let resposta = JSON.parse(`{ "continuidade" : ["Nenhuma continuidade foi encontrada para busca realizada"]  }`)
     for(let mathchesCount = config.matchesRequiredMaximum; mathchesCount >= config.matchesRequiredMinimum; mathchesCount--){      
-        let rangeFirstIndex = 14
-        let rangeEndIndex = rangeFirstIndex + searchSize 
+        console.log('continuitySize: ' + config.continuitySize)
+        let rangeFirstIndex = config.continuitySize
+        let rangeEndIndex = rangeFirstIndex + searchSize
         console.log('MatchCountRequired: ' + mathchesCount)
         while(true){
-            console.log('Index: ' + rangeFirstIndex + ' - ' + rangeEndIndex) 
+            console.log('Searching between Index: ' + rangeFirstIndex + ' - ' + rangeEndIndex) 
             arrayStored = dataStored.slice(rangeFirstIndex,rangeEndIndex)
             if(arrayStored.length < config.searchSize){
                 break
             }
             if(getMatchesTotalFromSearch(arrayStored,arraySearch) >= mathchesCount){      
-                console.log('Index: ' + rangeFirstIndex + ' - ' + rangeEndIndex) 
+                console.log('Found between Index: ' + rangeFirstIndex + ' - ' + rangeEndIndex) 
                 arrayStored.forEach(e=> console.log(e.dh + ' ' + e.left + ' ' + e.right))         
                 if(rangeFirstIndex >= config.continuitySize){
                     rangeEndIndex = rangeFirstIndex
