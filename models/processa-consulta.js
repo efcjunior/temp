@@ -83,6 +83,9 @@ const processaConsulta = (dataSearch) => {
             break;
         case '8':
             config = new Config(8,5,6,8)
+           break;
+        case '5':
+            config = new Config(5,5,5,5)
         break;
     }    
     let arraySearch = dataSearch
