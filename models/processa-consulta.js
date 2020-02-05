@@ -21,7 +21,7 @@ class ValuePair {
         this.dh = fields[0]        
         this.left = parseFloat(fields[1].replace(/,/g, '.'))
         this.right = parseFloat(fields[2].replace(/,/g, '.'))
-        this.variations = this.getVariations(this.left,this.right)        
+        this.variations = this.getVariations(this.right,this.left)        
         this.id = sha256(this.toString())
     }
 
@@ -29,12 +29,12 @@ class ValuePair {
         return this.dh + this.left + this.right
     }
 
-    getCoefficient(left, right){
-        return Math.abs(left - right)
+    getCoefficient(right, left){
+        return  right - left
     }
 
-    getVariations(left, right){
-        let coefficient = this.getCoefficient(left, right)
+    getVariations(right, left){
+        let coefficient = this.getCoefficient(right, left)
         return  [
             //coefficient - 0.5,
             coefficient
@@ -42,8 +42,8 @@ class ValuePair {
         ]
     }
 
-    isSearchCoefficientMatches(left, right){
-        let searchCoefficient = this.getCoefficient(left, right)
+    isSearchCoefficientMatches(right, left){
+        let searchCoefficient = this.getCoefficient(right, left)
         return this.variations.includes(searchCoefficient)
     }
 }
@@ -61,7 +61,7 @@ const getMatchesTotalFromSearch = function(arrayStored, arraySearch){
     let matchesCount = 0    
     if(arrayStored.length >=  arraySearch.length){
         for(let i = 0; i < arraySearch.length; i++){
-            if(arrayStored[i].isSearchCoefficientMatches(arraySearch[i][0], arraySearch[i][1])){
+            if(arrayStored[i].isSearchCoefficientMatches(arraySearch[i][1], arraySearch[i][0])){
                 matchesCount++
             }    
         }
